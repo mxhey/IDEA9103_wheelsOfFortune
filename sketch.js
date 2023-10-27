@@ -97,7 +97,7 @@ class Circle {
     ellipse(this.xPos, this.yPos, this.diam);
 
     stroke(this.stroke)
-    stroke(3);
+    strokeWeight(10)
 
     fill(this.color2);
     ellipse(this.xPos, this.yPos, this.circle2);
