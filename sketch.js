@@ -13,8 +13,12 @@ let xPadding = 200;
 let tempX;
 let tempY;
 
+let image;
+
 function setup() {
   createCanvas(800, 800);
+
+  image = loadImage("assets/paint.png");
 
   colorMode(HSB);
   background(197, 100, 46);
@@ -45,38 +49,27 @@ function setup() {
 
   for (j = 0; j < circles.length; j++) {
     circles[j].draw();
-    
-    dots[j].draw();
 
-    
+    dots[j].draw();
   }
 }
 
 function draw() {
-
-  for (i = 0; i < circles.length; i++) {
-    
-
-  }
-
   for (j = 0; j < circles.length; j++) {
-   
     orbits[j].update();
     circles[j].draw();
     dots[j].draw();
     orbits[j].draw();
-
   }
 }
-
 
 class Circle {
   constructor(x, y, d, c2) {
     noStroke();
-    this.color1 = color(random(360), 85, 75);
-    this.color2 = color(random(360), 85, 75);
-    this.color3 = color(random(360), 85, 75);
-    this.color4 = color(random(360), 85, 75);
+    this.color1 = color(random(360), 33, 100);
+    this.color2 = color(random(360), 33, 180);
+    this.color3 = color(random(360), 33, 180);
+    this.color4 = color(random(360), 33, 180);
 
     this.stroke = color(random(360), 85, 75);
 
@@ -96,8 +89,8 @@ class Circle {
     fill(this.color1);
     ellipse(this.xPos, this.yPos, this.diam);
 
-    stroke(this.stroke)
-    strokeWeight(10)
+    stroke(this.stroke);
+    strokeWeight(10);
 
     fill(this.color2);
     ellipse(this.xPos, this.yPos, this.circle2);
@@ -116,7 +109,7 @@ class Dot {
     this.y = y;
     this.diam = diam;
     this.min = min;
-    this.color = color(random(360), 85, 30);
+    this.color = color(random(230), 85, 30);
 
     this.noOfDots = 40;
     this.noOfLayers = (this.diam - this.min) / 37.5;
@@ -145,7 +138,7 @@ class Orbit {
   constructor(x, y) {
     this.orbitX = x;
     this.orbitY = y;
-    this.orbitRadius = 150
+    this.orbitRadius = 150;
     this.speed = 0.1;
     this.angle = 0;
   }
@@ -157,12 +150,12 @@ class Orbit {
     var y = this.orbitY + this.orbitRadius * sin(this.angle);
 
     fill(random(160), 90, 60);
-    stroke('#C04F25')
-    strokeWeight(3)
+    stroke("#C04F25");
+    strokeWeight(3);
     ellipse(x, y, random(5, 20));
   }
 
-  update(){
+  update() {
     this.angle += this.speed;
   }
- }
+}
