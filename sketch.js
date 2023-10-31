@@ -6,12 +6,15 @@ let max = 15;
 
 let circles = [];
 let dots = [];
+let stripes = [];
 let orbits = [];
 let overlap = false;
 let yPadding = 250;
 let xPadding = 200;
 let tempX;
 let tempY;
+
+let type = 1;
 
 let image;
 
@@ -37,9 +40,19 @@ function setup() {
 
       circles.push(circle);
 
-      let dot = new Dot(x, y, diam, circle2);
+      type = random(1, 2)
+      type = Math.round(type);
+      console.log(type)
 
+      if (type == 1) {
+      let dot = new Dot(x, y, diam, circle2);
       dots.push(dot);
+      //type -= 1;
+      } else {
+        let stripe = new Stripe(x, y, diam, circle2);
+        stripes.push(stripe);
+        //type+=1;
+      }
 
       let orbit = new Orbit(x, y);
 
@@ -50,7 +63,7 @@ function setup() {
   for (j = 0; j < circles.length; j++) {
     circles[j].draw();
 
-    dots[j].draw();
+    //dots[j].draw();
   }
 }
 
@@ -58,8 +71,17 @@ function draw() {
   for (j = 0; j < circles.length; j++) {
     orbits[j].update();
     circles[j].draw();
-    dots[j].draw();
+    
     orbits[j].draw();
+  }
+
+  for (i = 0; i < dots.length; i++) {
+    dots[i].draw();
+    
+  }
+
+  for (k = 0; k < stripes.length; k++) {
+    stripes[k].draw();
   }
 }
 
@@ -119,7 +141,6 @@ class Dot {
     push();
     noStroke();
     fill(this.color);
-    push();
     translate(this.x, this.y);
     let size = 15;
 
@@ -129,6 +150,32 @@ class Dot {
         rotate(i * this.noOfDots);
       }
     }
+
+    pop();
+  }
+}
+
+class Stripe {
+  constructor(x, y, diam, min) {
+    this.x = x;
+    this.y = y;
+    this.diam = diam;
+    this.min = min;
+    this.color = color(random(230), 85, 30);
+
+    this.noOfLines = 80;
+  }
+
+  draw() {
+    push()
+    stroke(this.color);
+    strokeWeight(5);
+
+    translate(this.x, this.y)
+      for (i = 0; i < this.noOfLines; i++) {
+        line(this.min/2, 0, this.diam/2, 0)
+        rotate( this.noOfLines);
+      }
 
     pop();
   }
