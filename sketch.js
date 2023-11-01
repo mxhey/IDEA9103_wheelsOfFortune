@@ -69,6 +69,7 @@ function setup() {
 }
 
 function draw() {
+  //DRAW ALL IN ARRAYS
   for (j = 0; j < circles.length; j++) {
     orbits[j].update();
     circles[j].draw();
@@ -86,6 +87,7 @@ function draw() {
   }
 }
 
+//CIRCLE OBJECT
 class Circle {
   constructor(x, y, d, c2) {
     noStroke();
@@ -100,6 +102,7 @@ class Circle {
     this.yPos = y;
     this.diam = d;
 
+    //EACH ADDITIONAL CIRCLE WITHIN THE MAIN CIRCLE
     this.circle2 = c2;
 
     this.circle3 = this.circle2 - random(20, 40);
@@ -126,10 +129,13 @@ class Circle {
   }
 }
 
+
+//DOTS OBJECT
 class Dot {
   constructor(x, y, diam, min) {
     this.x = x;
     this.y = y;
+    
     this.diam = diam;
     this.min = min;
     this.color = color(random(230), 85, 30);
@@ -145,6 +151,8 @@ class Dot {
     translate(this.x, this.y);
     let size = 15;
 
+    //USES DIAM AND INNER CIRCLE TO DETERMINE WHERE DOTS SHOULD BE
+    //CREATES LAYERS OF DOTS ROTATE INCREMENTALLY
     for (let j = 0; j < this.noOfLayers; j++) {
       for (let i = 0; i < this.noOfDots; i++) {
         ellipse(this.min / 2 + size / 2 + j * size, 0, size);
@@ -156,6 +164,7 @@ class Dot {
   }
 }
 
+//STRIPES OBJECT
 class Stripe {
   constructor(x, y, diam, min) {
     this.x = x;
@@ -172,6 +181,7 @@ class Stripe {
     stroke(this.color);
     strokeWeight(5);
 
+    //CREATES LINES AND RANDOMLY ROTATES
     translate(this.x, this.y)
       for (i = 0; i < this.noOfLines; i++) {
         line(this.min/2, 0, this.diam/2, 0)
@@ -182,6 +192,7 @@ class Stripe {
   }
 }
 
+//ORBIT OBJECTS
 class Orbit {
   constructor(x, y) {
     this.orbitX = x;
@@ -192,8 +203,8 @@ class Orbit {
   }
 
   draw() {
-    //translate(this.x, this, y);
 
+    //MOVES USING COSINE AND SINE WAVES ORBITTING AROUND CIRCLES
     var x = this.orbitX + this.orbitRadius * cos(this.angle);
     var y = this.orbitY + this.orbitRadius * sin(this.angle);
 
