@@ -18,7 +18,11 @@ let type = 1;
 
 let image;
 
+let scaleFactor = 1;
+let scale;
+
 function setup() {
+  //frameRate(30)
   createCanvas(800, 800);
 
   image = loadImage("assets/paint.png");
@@ -34,6 +38,7 @@ function setup() {
       x = (60 + xPadding) * j + random(-10, 10);
       //SET DIAMETER AND RANDOM INNER CIRCLE DIAMETER
 
+      
       circle2 = diam - random(90, 150);
 
       let circle = new Circle(x, y, diam, circle2);
@@ -42,11 +47,11 @@ function setup() {
 
       type = random(1, 2)
       type = Math.round(type);
-      console.log(type)
 
       if (type == 1) {
       let dot = new Dot(x, y, diam, circle2);
       dots.push(dot);
+
       //type -= 1;
       } else {
         let stripe = new Stripe(x, y, diam, circle2);
@@ -57,6 +62,7 @@ function setup() {
       let orbit = new Orbit(x, y);
 
       orbits.push(orbit);
+
     }
   }
 
@@ -68,11 +74,16 @@ function setup() {
 }
 
 function draw() {
+  for (h = 0; h < orbits.length; h++){
+    orbits[h].update()
+    orbits[h].draw()
+  }
+  background(197, 100, 46, 0.3);
   for (j = 0; j < circles.length; j++) {
     orbits[j].update();
     circles[j].draw();
     
-    orbits[j].draw();
+    
   }
 
   for (i = 0; i < dots.length; i++) {
@@ -123,6 +134,40 @@ class Circle {
     fill(this.color4);
     ellipse(this.xPos, this.yPos, this.circle4);
   }
+
+  scale() {
+    //scale(5)
+    push()
+
+    setInterval(this.grow(), 5000)
+
+    setInterval(this.shrink(), 5000)
+   
+    console.log("scaled")
+    pop()
+  }
+
+  grow() {
+    scale = diam += 40
+    this.diam = scale
+    this.draw()
+  }
+
+  shrink() {
+    scale = diam -= 40
+    this.diam = scale
+    this.draw()
+  }
+
+  startJitter() {
+      setInterval(this.jitter(), 5000);
+  }
+
+  jitter() {
+    this.xPos += random(-3, 3);
+    this.draw
+  }
+  
 }
 
 class Dot {
@@ -150,7 +195,6 @@ class Dot {
         rotate(i * this.noOfDots);
       }
     }
-
     pop();
   }
 }
@@ -179,6 +223,36 @@ class Stripe {
 
     pop();
   }
+
+  scale() {
+    //scale(5)
+    push()
+
+    setInterval(this.grow(), 1000)
+
+    setInterval(this.shrink(), 1000)
+   
+    console.log("scaled")
+    pop()
+  }
+
+  grow() {
+    stripes.forEach(line => {
+      scale = diam += 40
+      this.diam = scale
+      fill(random(360, 100, 100))
+      this.draw()
+    });
+    
+  }
+
+  shrink() {
+    stripes.forEach(line => {
+      scale = diam -= 40
+      this.diam = scale
+      this.draw()
+    });
+  }
 }
 
 class Orbit {
@@ -205,4 +279,36 @@ class Orbit {
   update() {
     this.angle += this.speed;
   }
+}
+
+function mousePressed() {
+  console.log("Mouse clicked");
+  for (i = 0; i < circles.length; i++) {
+    if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
+      console.log(i + " pressed")
+      circles[i].scale()
+      //circles[i].draw()
+    }
+  }
+
+  for (i = 0; i < stripes.length; i++) {
+    if (dist(mouseX, mouseY, stripes[i].x, stripes[i].y) <= diam/2) {
+      console.log(i + " pressed")
+      stripes[i].scale()
+      //circles[i].draw()
+    }
+  }
+}
+
+function keyPressed() {
+  if (key == "d") {
+    circles.forEach(circle => {
+      //circle.xPos += random(-3, 3);
+      circle.startJitter();
+     });
+  }
+}
+
+function jitter() {
+  
 }
