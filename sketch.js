@@ -3,6 +3,7 @@ let y;
 let diam = 250;
 let circle2;
 let max = 15;
+let circlesX = 15;
 
 let circles = [];
 let dots = [];
@@ -19,51 +20,51 @@ let type = 1;
 let image;
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(windowWidth, windowHeight);
 
-  image = loadImage("assets/paint.png");
+  //FIND THE AMOUNT OF CIRCLES NEEDED TO FILL WINDOW
+  circlesX = Math.round(width / diam)
+
+  console.log(circlesX)
 
   colorMode(HSB);
   background(197, 100, 46);
-
+  
+  //CREATE CIRCLES UNTIL IT REACHES WITH AND START NEW LAYER
   for (i = 0; i < max; i++) {
     y = (25 + yPadding) * i;
 
-    for (j = 0; j < 6; j++) {
-      y += +50;
+    for (j = 0; j < circlesX; j++) {
+      //INCREASES THE Y POSITION OF EACH CIRCLE IN LAYER DEPENDENT OF WINDOW WIDTH
+      y += width/(circlesX*10);
       x = (60 + xPadding) * j + random(-10, 10);
       //SET DIAMETER AND RANDOM INNER CIRCLE DIAMETER
 
+      //INNER CIRCLE DIAM
       circle2 = diam - random(90, 150);
 
       let circle = new Circle(x, y, diam, circle2);
 
+      //ADD NEW CIRCLE TO ARRAY
       circles.push(circle);
 
       type = random(1, 2)
       type = Math.round(type);
-      console.log(type)
 
+      //SWITCH RANDOMLY BETWEEN DOTS AND STRIPES
       if (type == 1) {
       let dot = new Dot(x, y, diam, circle2);
       dots.push(dot);
-      //type -= 1;
       } else {
         let stripe = new Stripe(x, y, diam, circle2);
         stripes.push(stripe);
-        //type+=1;
       }
 
+      //CREATE ORBIT FOR EACH CIRCLE
       let orbit = new Orbit(x, y);
 
       orbits.push(orbit);
     }
-  }
-
-  for (j = 0; j < circles.length; j++) {
-    circles[j].draw();
-
-    //dots[j].draw();
   }
 }
 
