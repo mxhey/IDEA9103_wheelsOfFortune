@@ -10,8 +10,8 @@ let dots = [];
 let stripes = [];
 let orbits = [];
 let overlap = false;
-let yPadding = 250;
-let xPadding = 200;
+let yPadding = 200;
+let xPadding = 250;
 let tempX;
 let tempY;
 
@@ -23,20 +23,20 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   //FIND THE AMOUNT OF CIRCLES NEEDED TO FILL WINDOW
-  circlesX = Math.round(width / diam)
+  circlesX = Math.round(width / diam);
 
-  console.log(circlesX)
+  console.log(circlesX);
 
   colorMode(HSB);
-  background(197, 100, 46);
-  
+  background(220, 26, 100);
+
   //CREATE CIRCLES UNTIL IT REACHES WITH AND START NEW LAYER
   for (i = 0; i < max; i++) {
-    y = (25 + yPadding) * i;
+    y = (100 + yPadding) * i;
 
     for (j = 0; j < circlesX; j++) {
       //INCREASES THE Y POSITION OF EACH CIRCLE IN LAYER DEPENDENT OF WINDOW WIDTH
-      y += width/(circlesX*10);
+      y += width / (circlesX * 10);
       x = (60 + xPadding) * j + random(-10, 10);
       //SET DIAMETER AND RANDOM INNER CIRCLE DIAMETER
 
@@ -48,13 +48,13 @@ function setup() {
       //ADD NEW CIRCLE TO ARRAY
       circles.push(circle);
 
-      type = random(1, 2)
+      type = random(1, 2);
       type = Math.round(type);
 
       //SWITCH RANDOMLY BETWEEN DOTS AND STRIPES
       if (type == 1) {
-      let dot = new Dot(x, y, diam, circle2);
-      dots.push(dot);
+        let dot = new Dot(x, y, diam, circle2);
+        dots.push(dot);
       } else {
         let stripe = new Stripe(x, y, diam, circle2);
         stripes.push(stripe);
@@ -73,13 +73,12 @@ function draw() {
   for (j = 0; j < circles.length; j++) {
     orbits[j].update();
     circles[j].draw();
-    
+
     orbits[j].draw();
   }
 
   for (i = 0; i < dots.length; i++) {
     dots[i].draw();
-    
   }
 
   for (k = 0; k < stripes.length; k++) {
@@ -91,12 +90,12 @@ function draw() {
 class Circle {
   constructor(x, y, d, c2) {
     noStroke();
-    this.color1 = color(random(360), 33, 100);
-    this.color2 = color(random(360), 33, 180);
-    this.color3 = color(random(360), 33, 180);
-    this.color4 = color(random(360), 33, 180);
+    this.color1 = color(random(20, 34), random(40), 100); // 大圆
+    this.color2 = color(324, random(0, 68), 100); // 内圈 light pink
+    this.color3 = color(7, 58, 48); // 内圈  dark
+    this.color4 = color(random(243), 24, 100); //中心
 
-    this.stroke = color(random(360), 85, 75);
+    this.stroke = color(342, 92, 97);
 
     this.xPos = x;
     this.yPos = y;
@@ -105,18 +104,19 @@ class Circle {
     //EACH ADDITIONAL CIRCLE WITHIN THE MAIN CIRCLE
     this.circle2 = c2;
 
-    this.circle3 = this.circle2 - random(20, 40);
+    this.circle3 = this.circle2 - random(40, 60);
 
-    this.circle4 = this.circle3 - random(20, 40);
+    this.circle4 = this.circle3 - random(20, 50);
   }
 
   draw() {
-    noStroke();
+    stroke(292, 33, 88);
+    strokeWeight(3);
     fill(this.color1);
     ellipse(this.xPos, this.yPos, this.diam);
 
     stroke(this.stroke);
-    strokeWeight(10);
+    strokeWeight(3);
 
     fill(this.color2);
     ellipse(this.xPos, this.yPos, this.circle2);
@@ -129,19 +129,18 @@ class Circle {
   }
 }
 
-
 //DOTS OBJECT
 class Dot {
   constructor(x, y, diam, min) {
     this.x = x;
     this.y = y;
-    
+
     this.diam = diam;
     this.min = min;
-    this.color = color(random(230), 85, 30);
+    this.color = color(random(50), 83, 100);
 
-    this.noOfDots = 40;
-    this.noOfLayers = (this.diam - this.min) / 37.5;
+    this.noOfDots = 50;
+    this.noOfLayers = (this.diam - this.min) / 30;
   }
 
   draw() {
@@ -149,13 +148,13 @@ class Dot {
     noStroke();
     fill(this.color);
     translate(this.x, this.y);
-    let size = 15;
+    let size = 10;
 
     //USES DIAM AND INNER CIRCLE TO DETERMINE WHERE DOTS SHOULD BE
     //CREATES LAYERS OF DOTS ROTATE INCREMENTALLY
     for (let j = 0; j < this.noOfLayers; j++) {
       for (let i = 0; i < this.noOfDots; i++) {
-        ellipse(this.min / 2 + size / 2 + j * size, 0, size);
+        ellipse(this.min / 1.7 + size / 3 + j * size, 0, size);
         rotate(i * this.noOfDots);
       }
     }
@@ -171,22 +170,22 @@ class Stripe {
     this.y = y;
     this.diam = diam;
     this.min = min;
-    this.color = color(random(230), 85, 30);
+    this.color = color(random(230), 85, 50);
 
     this.noOfLines = 80;
   }
 
   draw() {
-    push()
+    push();
     stroke(this.color);
-    strokeWeight(5);
+    strokeWeight(3);
 
     //CREATES LINES AND RANDOMLY ROTATES
-    translate(this.x, this.y)
-      for (i = 0; i < this.noOfLines; i++) {
-        line(this.min/2, 0, this.diam/2, 0)
-        rotate( this.noOfLines);
-      }
+    translate(this.x, this.y);
+    for (i = 0; i < this.noOfLines; i++) {
+      line(this.min / 1.7, 0, this.diam / 2.1, 0);
+      rotate(this.noOfLines);
+    }
 
     pop();
   }
@@ -197,21 +196,19 @@ class Orbit {
   constructor(x, y) {
     this.orbitX = x;
     this.orbitY = y;
-    this.orbitRadius = 150;
+    this.orbitRadius = 170;
     this.speed = 0.1;
     this.angle = 0;
   }
 
   draw() {
-
     //MOVES USING COSINE AND SINE WAVES ORBITTING AROUND CIRCLES
     var x = this.orbitX + this.orbitRadius * cos(this.angle);
     var y = this.orbitY + this.orbitRadius * sin(this.angle);
 
-    fill(random(160), 90, 60);
-    stroke("#C04F25");
-    strokeWeight(3);
-    ellipse(x, y, random(5, 20));
+    fill(random(70), 40, 100);
+    noStroke();
+    ellipse(x, y, random(2, 10));
   }
 
   update() {
