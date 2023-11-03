@@ -115,6 +115,9 @@ class Circle {
     this.circle3 = this.circle2 - random(40, 60);
 
     this.circle4 = this.circle3 - random(20, 50);
+
+    this.size= 40;
+    this.grown = false;
   }
 
   draw() {
@@ -137,27 +140,33 @@ class Circle {
   }
 
   scale() {
-    //scale(5)
     push()
 
-    setInterval(this.grow(), 5000)
-
-    setInterval(this.shrink(), 5000)
+    if(this.grown == false) {
+      this.grow();
+    } else {
+      this.shrink()
+    }
+    //setInterval(this.shrink(), 5000)
    
     console.log("scaled")
     pop()
   }
 
   grow() {
-    scale = diam += 40
-    this.diam = scale
+    this.diam += this.size
+    this.circle2 += this.size
     this.draw()
+
+    this.grown = true;
   }
 
   shrink() {
-    scale = diam -= 40
-    this.diam = scale
+    this.diam -= this.size;
+    this.circle2 -= this.size
     this.draw()
+
+    this.grown = false;
   }
 
   startJitter() {
@@ -184,6 +193,9 @@ class Dot {
 
     this.noOfDots = 50;
     this.noOfLayers = (this.diam - this.min) / 30;
+
+    this.size = 120;
+    this.grown = false;
   }
 
   draw() {
@@ -203,6 +215,28 @@ class Dot {
     }
     pop();
   }
+
+  scale() {
+    if (this.grown == false) {
+      this.grow()
+    } else {
+      this.shrink();
+    }
+  }
+
+  grow() {
+    this.diam += this.size;
+    this.noOfLayers = (this.diam - this.min) / 30;
+    this.draw();
+    this.grown = true;
+  }
+
+  shrink() {
+    this.diam -= this.size;
+    this.noOfLayers = (this.diam - this.min) / 30;
+    this.draw();
+    this.grown = false;
+  }
 }
 
 //STRIPES OBJECT
@@ -215,6 +249,9 @@ class Stripe {
     this.color = color(random(230), 85, 50);
 
     this.noOfLines = 80;
+
+    this.size = 40;
+    this.grown = false;
   }
 
   draw() {
@@ -225,7 +262,7 @@ class Stripe {
     //CREATES LINES AND RANDOMLY ROTATES
     translate(this.x, this.y);
     for (i = 0; i < this.noOfLines; i++) {
-      line(this.min / 1.7, 0, this.diam / 2.1, 0);
+      line(this.min / 1.7, 0, this.diam / 2, 0);
       rotate(this.noOfLines);
     }
 
@@ -233,33 +270,29 @@ class Stripe {
   }
 
   scale() {
-    //scale(5)
-    push()
 
-    setInterval(this.grow(), 1000)
-
-    setInterval(this.shrink(), 1000)
+    if (this.grown == false) {
+      this.grow();
+    } else {
+      this.shrink();
+    }
    
-    console.log("scaled")
-    pop()
   }
 
   grow() {
-    stripes.forEach(line => {
-      scale = diam += 40
-      this.diam = scale
-      fill(random(360, 100, 100))
-      this.draw()
-    });
     
+      this.diam *=1.5
+      this.min += this.size;
+      this.color = color(random(255), 85, 50)
+      this.draw();
+      this.grown = true;
   }
 
   shrink() {
-    stripes.forEach(line => {
-      scale = diam -= 40
-      this.diam = scale
+      this.diam /= 1.5
+      this.min -= this.size;
       this.draw()
-    });
+      this.grown = false;
   }
 }
 
@@ -279,7 +312,7 @@ class Orbit {
     var y = this.orbitY + this.orbitRadius * sin(this.angle);
 
     fill(random(70), 40, 100);
-    noStroke();
+    stroke(10, 250, 250);
     ellipse(x, y, random(2, 10));
   }
 
@@ -292,17 +325,22 @@ function mousePressed() {
   console.log("Mouse clicked");
   for (i = 0; i < circles.length; i++) {
     if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
-      console.log(i + " pressed")
+      //onsole.log(i + " pressed")
       circles[i].scale()
-      //circles[i].draw()
     }
   }
 
   for (i = 0; i < stripes.length; i++) {
     if (dist(mouseX, mouseY, stripes[i].x, stripes[i].y) <= diam/2) {
-      console.log(i + " pressed")
-      stripes[i].scale()
-      //circles[i].draw()
+      //console.log(i + " pressed")
+      stripes[i].scale();
+    }
+  }
+
+  for (i = 0; i < dots.length; i++) {
+    if (dist(mouseX, mouseY, dots[i].x, dots[i].y) <= diam/2) {
+      //console.log(i + " pressed")
+      dots[i].scale();
     }
   }
 }
