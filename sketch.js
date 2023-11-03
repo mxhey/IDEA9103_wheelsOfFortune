@@ -3,6 +3,7 @@ let y;
 let diam = 250;
 let circle2;
 let max = 15;
+let circlesX = 15;
 
 let circles = [];
 let dots = [];
@@ -22,54 +23,52 @@ let scaleFactor = 1;
 let scale;
 
 function setup() {
-  //frameRate(30)
-  createCanvas(800, 800);
+  createCanvas(windowWidth, windowHeight);
 
-  image = loadImage("assets/paint.png");
+  //FIND THE AMOUNT OF CIRCLES NEEDED TO FILL WINDOW
+  circlesX = Math.round(width / diam)
+
+  console.log(circlesX)
 
   colorMode(HSB);
   background(197, 100, 46);
-
+  
+  //CREATE CIRCLES UNTIL IT REACHES WITH AND START NEW LAYER
   for (i = 0; i < max; i++) {
     y = (25 + yPadding) * i;
 
-    for (j = 0; j < 6; j++) {
-      y += +50;
+    for (j = 0; j < circlesX; j++) {
+      //INCREASES THE Y POSITION OF EACH CIRCLE IN LAYER DEPENDENT OF WINDOW WIDTH
+      y += width/(circlesX*10);
       x = (60 + xPadding) * j + random(-10, 10);
       //SET DIAMETER AND RANDOM INNER CIRCLE DIAMETER
 
-      
+      //INNER CIRCLE DIAM
       circle2 = diam - random(90, 150);
 
       let circle = new Circle(x, y, diam, circle2);
 
+      //ADD NEW CIRCLE TO ARRAY
       circles.push(circle);
 
       type = random(1, 2)
       type = Math.round(type);
 
+      //SWITCH RANDOMLY BETWEEN DOTS AND STRIPES
       if (type == 1) {
       let dot = new Dot(x, y, diam, circle2);
       dots.push(dot);
-
-      //type -= 1;
       } else {
         let stripe = new Stripe(x, y, diam, circle2);
         stripes.push(stripe);
-        //type+=1;
       }
 
+      //CREATE ORBIT FOR EACH CIRCLE
       let orbit = new Orbit(x, y);
 
       orbits.push(orbit);
 
     }
-  }
-
-  for (j = 0; j < circles.length; j++) {
-    circles[j].draw();
-
-    //dots[j].draw();
   }
 }
 
@@ -96,6 +95,7 @@ function draw() {
   }
 }
 
+//CIRCLE OBJECT
 class Circle {
   constructor(x, y, d, c2) {
     noStroke();
@@ -110,6 +110,7 @@ class Circle {
     this.yPos = y;
     this.diam = d;
 
+    //EACH ADDITIONAL CIRCLE WITHIN THE MAIN CIRCLE
     this.circle2 = c2;
 
     this.circle3 = this.circle2 - random(20, 40);
@@ -170,10 +171,13 @@ class Circle {
   
 }
 
+
+//DOTS OBJECT
 class Dot {
   constructor(x, y, diam, min) {
     this.x = x;
     this.y = y;
+    
     this.diam = diam;
     this.min = min;
     this.color = color(random(230), 85, 30);
@@ -189,6 +193,8 @@ class Dot {
     translate(this.x, this.y);
     let size = 15;
 
+    //USES DIAM AND INNER CIRCLE TO DETERMINE WHERE DOTS SHOULD BE
+    //CREATES LAYERS OF DOTS ROTATE INCREMENTALLY
     for (let j = 0; j < this.noOfLayers; j++) {
       for (let i = 0; i < this.noOfDots; i++) {
         ellipse(this.min / 2 + size / 2 + j * size, 0, size);
@@ -199,6 +205,7 @@ class Dot {
   }
 }
 
+//STRIPES OBJECT
 class Stripe {
   constructor(x, y, diam, min) {
     this.x = x;
@@ -215,6 +222,7 @@ class Stripe {
     stroke(this.color);
     strokeWeight(5);
 
+    //CREATES LINES AND RANDOMLY ROTATES
     translate(this.x, this.y)
       for (i = 0; i < this.noOfLines; i++) {
         line(this.min/2, 0, this.diam/2, 0)
@@ -255,6 +263,7 @@ class Stripe {
   }
 }
 
+//ORBIT OBJECTS
 class Orbit {
   constructor(x, y) {
     this.orbitX = x;
@@ -265,8 +274,8 @@ class Orbit {
   }
 
   draw() {
-    //translate(this.x, this, y);
 
+    //MOVES USING COSINE AND SINE WAVES ORBITTING AROUND CIRCLES
     var x = this.orbitX + this.orbitRadius * cos(this.angle);
     var y = this.orbitY + this.orbitRadius * sin(this.angle);
 
