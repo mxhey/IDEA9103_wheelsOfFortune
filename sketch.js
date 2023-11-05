@@ -17,8 +17,20 @@ let tempY;
 
 let type = 1;
 
-let xN = 0;
-let noiseAmount = 1;
+let circleClicked = false;
+let currentCircle;
+let currentCircleX;
+let currentCircleY;
+
+let dotClicked = false;
+let currentDot;
+let currentDotX;
+let currentDotY;
+
+let stripeClicked = false;
+let currentStripe;
+let currentStripeX;
+let currentStripeY;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -76,7 +88,7 @@ function draw() {
     orbits[h].update()
     orbits[h].draw()
   }
-  background(220, 26, 100, 0.3);
+  background(220, 26, 100, 0.05);
 
   //draw each circle
   for (j = 0; j < circles.length; j++) {
@@ -120,9 +132,6 @@ function draw() {
       });   
     }
   }
-
-  xN += 0.4
-
 }
 
 //CIRCLE OBJECT
@@ -362,28 +371,115 @@ class Orbit {
 
 function mousePressed() {
   console.log("Mouse clicked");
-  for (i = 0; i < circles.length; i++) {
-    if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
-      //onsole.log(i + " pressed")
-      circles[i].scale()
-    }
-  }
+  // for (i = 0; i < circles.length; i++) {
+  //   if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
+  //     //onsole.log(i + " pressed")
+  //     circles[i].scale()
+  //   }
+  // }
 
-  for (i = 0; i < stripes.length; i++) {
-    if (dist(mouseX, mouseY, stripes[i].x, stripes[i].y) <= diam/2) {
-      //console.log(i + " pressed")
-      stripes[i].scale();
-    }
-  }
+  // for (i = 0; i < stripes.length; i++) {
+  //   if (dist(mouseX, mouseY, stripes[i].x, stripes[i].y) <= diam/2) {
+  //     //console.log(i + " pressed")
+  //     stripes[i].scale();
+  //   }
+  // }
 
-  for (i = 0; i < dots.length; i++) {
-    if (dist(mouseX, mouseY, dots[i].x, dots[i].y) <= diam/2) {
-      //console.log(i + " pressed")
-      dots[i].scale();
-    }
-  }
+  // for (i = 0; i < dots.length; i++) {
+  //   if (dist(mouseX, mouseY, dots[i].x, dots[i].y) <= diam/2) {
+  //     //console.log(i + " pressed")
+  //     dots[i].scale();
+  //   }
+  // }
 }
 
 function mouseDragged() {
+  for (i = 0; i < circles.length; i++) {
+    if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
+      
+      if (circleClicked == false) {
+        currentCircleX = circles[i].xPos;
+        currentCircleY = circles[i].yPos;
+        currentCircle = i;
+        circleClicked = true;
+      }
+      
+      circles[i].xPos = constrain(mouseX, currentCircleX-50, currentCircleX+50);
+      circles[i].yPos = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
 
+      stripes.forEach(stripe => {
+        if (dist(mouseX, mouseY, stripe.x, stripe.y) <= diam/2) {
+          if (stripeClicked == false) {
+            currentStripeX = stripe.x;
+            currentStripeY = stripe.y;
+            currentStripe = stripe;
+            stripeClicked = true;
+          }
+
+          stripe.x = constrain(mouseX, currentCircleX-50, currentCircleX+50);
+          stripe.y = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
+        }
+      });
+
+      dots.forEach(dot => {
+        if (dist(mouseX, mouseY, dot.x, dot.y) <= diam/2) {
+          if (dotClicked == false) {
+            currentDotX = dot.x;
+            currentDotY = dot.y;
+            currentDot = dot;
+            dotClicked = true;
+          }
+
+          dot.x = constrain(mouseX, currentCircleX-50, currentCircleX+50);
+          dot.y = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
+        }
+      });
+    }
+  }
+
+  
+}
+
+function mouseReleased() {
+  circleClicked = false;
+  dotClicked = false;
+  stripeClicked = false;
+  
+  circles[currentCircle].xPos = currentCircleX;
+  circles[currentCircle].yPos = currentCircleY;
+
+  if (currentDot != null) {
+    currentDot.x = currentDotX;
+    currentDot.y = currentDotY;
+  }
+
+  if (currentStripe != null) {
+    currentStripe.x = currentStripeX;
+    currentStripe.y = currentStripeY;
+  }
+}
+
+function keyPressed() {
+  if (key == 'w') {
+    for (i = 0; i < circles.length; i++) {
+      if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
+        //onsole.log(i + " pressed")
+        circles[i].scale()
+      }
+    }
+  
+    for (i = 0; i < stripes.length; i++) {
+      if (dist(mouseX, mouseY, stripes[i].x, stripes[i].y) <= diam/2) {
+        //console.log(i + " pressed")
+        stripes[i].scale();
+      }
+    }
+  
+    for (i = 0; i < dots.length; i++) {
+      if (dist(mouseX, mouseY, dots[i].x, dots[i].y) <= diam/2) {
+        //console.log(i + " pressed")
+        dots[i].scale();
+      }
+    }
+  }
 }
