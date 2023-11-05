@@ -384,37 +384,43 @@ function mouseDragged() {
       }
       
       //move the circle around with mouse constrained to small area
-      circles[i].xPos = constrain(mouseX, currentCircleX-50, currentCircleX+50);
-      circles[i].yPos = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
+      circles[currentCircle].xPos = constrain(mouseX, currentCircleX-50, currentCircleX+50);
+      circles[currentCircle].yPos = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
 
       //check if the circle has stripes and moves with circle
       stripes.forEach(stripe => {
+        if (dotClicked == false) { //if dots already selected dont allow stripes
         if (dist(mouseX, mouseY, stripe.x, stripe.y) <= diam/2) {
           if (stripeClicked == false) {
+            //store current stripe variables
             currentStripeX = stripe.x;
             currentStripeY = stripe.y;
             currentStripe = stripe;
             stripeClicked = true;
           }
 
-          stripe.x = constrain(mouseX, currentCircleX-50, currentCircleX+50);
-          stripe.y = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
+          currentStripe.x = constrain(mouseX, currentCircleX-50, currentCircleX+50);
+          currentStripe.y = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
         }
+      }
       });
 
       //check if the circle has dots and move with circle
       dots.forEach(dot => {
+      if (stripeClicked == false) { //if stripe already selected dont allow dots
         if (dist(mouseX, mouseY, dot.x, dot.y) <= diam/2) {
           if (dotClicked == false) {
+            //store current dot variables
             currentDotX = dot.x;
             currentDotY = dot.y;
             currentDot = dot;
             dotClicked = true;
           }
 
-          dot.x = constrain(mouseX, currentCircleX-50, currentCircleX+50);
-          dot.y = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
+          currentDot.x = constrain(mouseX, currentCircleX-50, currentCircleX+50);
+          currentDot.y = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
         }
+      }
       });
     }
   }
