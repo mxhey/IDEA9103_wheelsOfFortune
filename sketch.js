@@ -17,18 +17,18 @@ let tempY;
 
 let type = 1;
 
-let circleClicked = false;
-let currentCircle;
+let circleClicked = false; //boolean is circle clicked
+let currentCircle; //values of position in array, X, Y pos
 let currentCircleX;
 let currentCircleY;
 
-let dotClicked = false;
-let currentDot;
+let dotClicked = false; //boolean is dots clicked
+let currentDot; //values of position in array, X, Y pos
 let currentDotX;
 let currentDotY;
 
-let stripeClicked = false;
-let currentStripe;
+let stripeClicked = false; //boolean is stripes clicked
+let currentStripe; //values of position in array, X, Y pos
 let currentStripeX;
 let currentStripeY;
 
@@ -110,7 +110,7 @@ function draw() {
     
 //if key is pressed
   if (keyIsPressed) {
-    //if d is pressed
+    //if d is pressed jitter each circle and dots or stripes
     if (key == 'd') {
       circles.forEach(circle => {
       let value = random(-2, 2);
@@ -182,6 +182,7 @@ class Circle {
   scale() {
     push()
 
+    //if not grown grow circle, otherwise shrink circle
     if(this.grown == false) {
       this.grow();
     } else {
@@ -369,44 +370,24 @@ class Orbit {
   }
 }
 
-function mousePressed() {
-  console.log("Mouse clicked");
-  // for (i = 0; i < circles.length; i++) {
-  //   if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
-  //     //onsole.log(i + " pressed")
-  //     circles[i].scale()
-  //   }
-  // }
-
-  // for (i = 0; i < stripes.length; i++) {
-  //   if (dist(mouseX, mouseY, stripes[i].x, stripes[i].y) <= diam/2) {
-  //     //console.log(i + " pressed")
-  //     stripes[i].scale();
-  //   }
-  // }
-
-  // for (i = 0; i < dots.length; i++) {
-  //   if (dist(mouseX, mouseY, dots[i].x, dots[i].y) <= diam/2) {
-  //     //console.log(i + " pressed")
-  //     dots[i].scale();
-  //   }
-  // }
-}
-
 function mouseDragged() {
   for (i = 0; i < circles.length; i++) {
+    //check which circle is clicked on
     if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
-      
+
       if (circleClicked == false) {
+        //store original position of circle
         currentCircleX = circles[i].xPos;
         currentCircleY = circles[i].yPos;
         currentCircle = i;
         circleClicked = true;
       }
       
+      //move the circle around with mouse constrained to small area
       circles[i].xPos = constrain(mouseX, currentCircleX-50, currentCircleX+50);
       circles[i].yPos = constrain(mouseY, currentCircleY-50, currentCircleY+50);  
 
+      //check if the circle has stripes and moves with circle
       stripes.forEach(stripe => {
         if (dist(mouseX, mouseY, stripe.x, stripe.y) <= diam/2) {
           if (stripeClicked == false) {
@@ -421,6 +402,7 @@ function mouseDragged() {
         }
       });
 
+      //check if the circle has dots and move with circle
       dots.forEach(dot => {
         if (dist(mouseX, mouseY, dot.x, dot.y) <= diam/2) {
           if (dotClicked == false) {
@@ -441,6 +423,7 @@ function mouseDragged() {
 }
 
 function mouseReleased() {
+  //once mouse is released return circle to original position
   circleClicked = false;
   dotClicked = false;
   stripeClicked = false;
@@ -460,24 +443,25 @@ function mouseReleased() {
 }
 
 function keyPressed() {
+  //if w is pressed check for mouse position on circle
   if (key == 'w') {
     for (i = 0; i < circles.length; i++) {
       if (dist(mouseX, mouseY, circles[i].xPos, circles[i].yPos) <= diam/2) {
-        //onsole.log(i + " pressed")
+        //if mouse over circle scale
         circles[i].scale()
       }
     }
   
     for (i = 0; i < stripes.length; i++) {
       if (dist(mouseX, mouseY, stripes[i].x, stripes[i].y) <= diam/2) {
-        //console.log(i + " pressed")
+        //if mouse over circle w/ stripes scale stripes
         stripes[i].scale();
       }
     }
   
     for (i = 0; i < dots.length; i++) {
       if (dist(mouseX, mouseY, dots[i].x, dots[i].y) <= diam/2) {
-        //console.log(i + " pressed")
+        //if mouse over circle w/ dots scale dots
         dots[i].scale();
       }
     }
