@@ -17,10 +17,8 @@ let tempY;
 
 let type = 1;
 
-let image;
-
-let scaleFactor = 1;
-let scale;
+let xN = 0;
+let noiseAmount = 1;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -73,11 +71,14 @@ function setup() {
 }
 
 function draw() {
+  //draw each orbit
   for (h = 0; h < orbits.length; h++){
     orbits[h].update()
     orbits[h].draw()
   }
   background(220, 26, 100, 0.3);
+
+  //draw each circle
   for (j = 0; j < circles.length; j++) {
     orbits[j].update();
     circles[j].draw();
@@ -85,13 +86,43 @@ function draw() {
     orbits[j].draw();
   }
 
-  for (i = 0; i < dots.length; i++) {
-    dots[i].draw();
+//draw each dots
+  dots.forEach(dot => {
+    dot.draw();
+  });
+
+//draw each stripes
+  stripes.forEach(stripe => {
+    stripe.draw();
+  });
+    
+//if key is pressed
+  if (keyIsPressed) {
+    //if d is pressed
+    if (key == 'd') {
+      circles.forEach(circle => {
+      let value = random(-2, 2);
+
+        orbits.forEach(orbit => {
+          orbit.jitter(value)
+        }); 
+        stripes.forEach(stripe => {
+          if (stripe.x == circle.xPos) {
+            stripe.jitter(value);
+          }
+        });
+        dots.forEach(dot => {
+          if (dot.x == circle.xPos) {
+            dot.jitter(value);
+          }
+        });
+        circle.jitter(value);
+      });   
+    }
   }
 
-  for (k = 0; k < stripes.length; k++) {
-    stripes[k].draw();
-  }
+  xN += 0.4
+
 }
 
 //CIRCLE OBJECT
@@ -169,13 +200,8 @@ class Circle {
     this.grown = false;
   }
 
-  startJitter() {
-      setInterval(this.jitter(), 5000);
-  }
-
-  jitter() {
-    this.xPos += random(-3, 3);
-    this.draw
+  jitter(num) {
+    this.xPos += num;
   }
   
 }
@@ -237,6 +263,10 @@ class Dot {
     this.draw();
     this.grown = false;
   }
+
+  jitter(num) {
+    this.x += num;
+  }
 }
 
 //STRIPES OBJECT
@@ -294,6 +324,10 @@ class Stripe {
       this.draw()
       this.grown = false;
   }
+
+  jitter(num) {
+    this.x += num;
+  }
 }
 
 //ORBIT OBJECTS
@@ -318,6 +352,11 @@ class Orbit {
 
   update() {
     this.angle += this.speed;
+  }
+
+  jitter(value) {
+    this.orbitX += value;
+    this.draw();
   }
 }
 
@@ -345,15 +384,6 @@ function mousePressed() {
   }
 }
 
-function keyPressed() {
-  if (key == "d") {
-    circles.forEach(circle => {
-      //circle.xPos += random(-3, 3);
-      circle.startJitter();
-     });
-  }
-}
+function mouseDragged() {
 
-function jitter() {
-  
 }
