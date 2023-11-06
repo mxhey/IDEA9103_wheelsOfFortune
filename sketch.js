@@ -27,9 +27,6 @@ function setup() {
 
   //FIND THE AMOUNT OF CIRCLES NEEDED TO FILL WINDOW
   circlesX = Math.round(width / diam);
-
-  console.log(circlesX);
-
   colorMode(HSB);
 
   //CREATE CIRCLES UNTIL IT REACHES WITH AND START NEW LAYER
@@ -72,13 +69,16 @@ function setup() {
 
 function draw() {
 
-  background(220, 26, 100);
+  background(220, 26, 100,0.06);
 
+  // apply Perlin noise to movement
   let xNoiseOffset = map(noise(xOff), 0, 1, -5, 5);
   let yNoiseOffset = map(noise(yOff), 0, 1, -5, 5);
 
-  //DRAW ALL IN ARRAYS
+  // draw each element using the Perlin noise offset
+
   for (j = 0; j < circles.length; j++) {
+
     circles[j].xPos += xNoiseOffset;
     circles[j].yPos += yNoiseOffset;
 
@@ -90,14 +90,30 @@ function draw() {
     orbits[j].draw();
   }
 
-  for (i = 0; i < dots.length; i++) {
-    dots[i].draw();
+    for (i = 0; i < dots.length; i++) {
+      dots[i].x += xNoiseOffset;
+      dots[i].y += yNoiseOffset;
+
+      dots[i].x = constrain(dots[i].x, 0, width);
+      dots[i].y = constrain(dots[i].y, 0, height);
+
+      dots[i].draw();
+    }
+  
+    for (k = 0; k < stripes.length; k++) {
+      stripes[k].x += xNoiseOffset;
+      stripes[k].y += yNoiseOffset;
+
+      stripes[k].x = constrain(stripes[k].x, 0, width);
+      stripes[k].y = constrain(stripes[k].y, 0, height);
+
+      stripes[k].draw();
+    }
+      // Increment Perlin noise values
+      xOff += 0.01;
+      yOff += 0.01;
   }
 
-  for (k = 0; k < stripes.length; k++) {
-    stripes[k].draw();
-  }
-}
 
 //CIRCLE OBJECT
 class Circle {
