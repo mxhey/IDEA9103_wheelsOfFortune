@@ -90,10 +90,10 @@ function draw() {
 class Circle {
   constructor(x, y, d, c2) {
     noStroke();
-    this.color1 = color(random(20, 34), random(40), 100); // 大圆
-    this.color2 = color(324, random(0, 68), 100); // 内圈 light pink
-    this.color3 = color(7, 58, 48); // 内圈  dark
-    this.color4 = color(random(243), 24, 100); //中心
+    this.color1 = color(random(20, 34), random(40), 100); // big circle
+    this.color2 = color(324, random(0, 68), 100); // inner circle1: light pink
+    this.color3 = color(7, 58, 48); // inner circle2: dark
+    this.color4 = color(random(243), 24, 100); // center
 
     this.stroke = color(342, 92, 97);
 
