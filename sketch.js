@@ -19,6 +19,9 @@ let type = 1;
 
 let image;
 
+let xOff = 0;
+let yOff = 0;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
