@@ -70,7 +70,7 @@ function setup() {
 
 function draw() {
 
-  background(220, 26, 100,0.1);
+  background(55, 70, 100,0.1);
 
   // apply Perlin noise to movement
   let xNoiseOffset = map(noise(xOff), 0, 1, -2, 2);
@@ -233,7 +233,7 @@ class Orbit {
     this.orbitX = x;
     this.orbitY = y;
     this.orbitRadius = 190;
-    this.speed = 0.1;
+    this.speed = 10;
     this.angle = 0;
   }
 
@@ -244,7 +244,7 @@ class Orbit {
 
     fill(random(70), 40, 100);
     noStroke();
-    ellipse(x, y, random(2, 10));
+    ellipse(x, y, random(10, 30));
   }
 
   update() {
