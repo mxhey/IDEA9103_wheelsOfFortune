@@ -31,7 +31,6 @@ function setup() {
   console.log(circlesX);
 
   colorMode(HSB);
-  background(220, 26, 100);
 
   //CREATE CIRCLES UNTIL IT REACHES WITH AND START NEW LAYER
   for (i = 0; i < max; i++) {
@@ -72,11 +71,22 @@ function setup() {
 }
 
 function draw() {
+
+  background(220, 26, 100);
+
+  let xNoiseOffset = map(noise(xOff), 0, 1, -5, 5);
+  let yNoiseOffset = map(noise(yOff), 0, 1, -5, 5);
+
   //DRAW ALL IN ARRAYS
   for (j = 0; j < circles.length; j++) {
+    circles[j].xPos += xNoiseOffset;
+    circles[j].yPos += yNoiseOffset;
+
+    circles[j].xPos = constrain(circles[j].xPos, 0, width);
+    circles[j].yPos = constrain(circles[j].yPos, 0, height);
+
     orbits[j].update();
     circles[j].draw();
-
     orbits[j].draw();
   }
 
