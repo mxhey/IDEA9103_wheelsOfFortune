@@ -19,6 +19,7 @@ let type = 1;
 
 let image;
 
+// set x and y offset
 let xOff = 0;
 let yOff = 0;
 
@@ -72,12 +73,13 @@ function draw() {
   background(220, 26, 100,0.06);
 
   // apply Perlin noise to movement
-  let xNoiseOffset = map(noise(xOff), 0, 1, -5, 5);
-  let yNoiseOffset = map(noise(yOff), 0, 1, -5, 5);
+  let xNoiseOffset = map(noise(xOff), 0, 1, -2, 2);
+  let yNoiseOffset = map(noise(yOff), 0, 1, -2, 2);
 
   // draw each element using the Perlin noise offset
 
   for (j = 0; j < circles.length; j++) {
+    if (circles[j].xPos >= 0 && circles[j].xPos <= width && circles[j].yPos >= 0 && circles[j].yPos <= height) {
 
     circles[j].xPos += xNoiseOffset;
     circles[j].yPos += yNoiseOffset;
@@ -89,8 +91,10 @@ function draw() {
     circles[j].draw();
     orbits[j].draw();
   }
+}
 
     for (i = 0; i < dots.length; i++) {
+      if (dots[i].x >= 0 && dots[i].x <= width && dots[i].y >= 0 && dots[i].y <= height) {
       dots[i].x += xNoiseOffset;
       dots[i].y += yNoiseOffset;
 
@@ -99,8 +103,10 @@ function draw() {
 
       dots[i].draw();
     }
+  }
   
     for (k = 0; k < stripes.length; k++) {
+      if (stripes[k].x >= 0 && stripes[k].x <= width && stripes[k].y >= 0 && stripes[k].y <= height) {
       stripes[k].x += xNoiseOffset;
       stripes[k].y += yNoiseOffset;
 
@@ -109,6 +115,7 @@ function draw() {
 
       stripes[k].draw();
     }
+  }
       // Increment Perlin noise values
       xOff += 0.01;
       yOff += 0.01;
