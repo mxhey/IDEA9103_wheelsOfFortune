@@ -70,7 +70,7 @@ function setup() {
 
 function draw() {
 
-  background(220, 26, 100,0.06);
+  background(220, 26, 100,0.1);
 
   // apply Perlin noise to movement
   let xNoiseOffset = map(noise(xOff), 0, 1, -2, 2);
@@ -117,8 +117,8 @@ function draw() {
     }
   }
       // Increment Perlin noise values
-      xOff += 0.01;
-      yOff += 0.01;
+      xOff += 0.1;
+      yOff += 0.1;
   }
 
 
@@ -126,10 +126,10 @@ function draw() {
 class Circle {
   constructor(x, y, d, c2) {
     noStroke();
-    this.color1 = color(random(20, 34), random(40), 100); // 大圆
-    this.color2 = color(324, random(0, 68), 100); // 内圈 light pink
-    this.color3 = color(7, 58, 48); // 内圈  dark
-    this.color4 = color(random(243), 24, 100); //中心
+    this.color1 = color(random(20, 34), random(40), 100); // oudside circle
+    this.color2 = color(324, random(0, 68), 100); // inner circle: light pink
+    this.color3 = color(7, 58, 48); // inner circle:  dark
+    this.color4 = color(random(243), 24, 100); // center
 
     this.stroke = color(342, 92, 97);
 
@@ -147,7 +147,7 @@ class Circle {
 
   draw() {
     stroke(292, 33, 88);
-    strokeWeight(3);
+    strokeWeight(8);
     fill(this.color1);
     ellipse(this.xPos, this.yPos, this.diam);
 
@@ -184,7 +184,7 @@ class Dot {
     noStroke();
     fill(this.color);
     translate(this.x, this.y);
-    let size = 10;
+    let size = 9;
 
     //USES DIAM AND INNER CIRCLE TO DETERMINE WHERE DOTS SHOULD BE
     //CREATES LAYERS OF DOTS ROTATE INCREMENTALLY
@@ -214,7 +214,7 @@ class Stripe {
   draw() {
     push();
     stroke(this.color);
-    strokeWeight(3);
+    strokeWeight(1.5);
 
     //CREATES LINES AND RANDOMLY ROTATES
     translate(this.x, this.y);
@@ -232,7 +232,7 @@ class Orbit {
   constructor(x, y) {
     this.orbitX = x;
     this.orbitY = y;
-    this.orbitRadius = 170;
+    this.orbitRadius = 190;
     this.speed = 0.1;
     this.angle = 0;
   }
